@@ -1,0 +1,28 @@
+.homepage-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.category-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.category-card {
+  background-color: var(--secondary);
+  color: var(--white);
+  height: 27rem;
+  width: 27rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.category-card:hover {
+  outline: 1px solid var(--primary);
+}
