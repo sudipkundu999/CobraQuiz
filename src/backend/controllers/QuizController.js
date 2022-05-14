@@ -2,14 +2,28 @@ import { Response } from "miragejs";
 import { requiresAuth } from "../utils/authUtils";
 
 export const getAllQuizNameHandler = function () {
-  return new Response(200, {}, { quizName: this.db.quiz.map((q) => q.title) });
+  return new Response(
+    200,
+    {},
+    { quizNames: this.db.quizzes.map((item) => item.title) }
+  );
 };
 
-export const getSingleQuizQuestionsHandler = function (schema, request) {
+export const getQuizQuestionsHandler = function (schema, request) {
   const quizId = request.params.quizId;
+  const userId = requiresAuth.call(this, request);
   try {
-    const quizToPlay = schema.quiz.findBy({ _id: quizId });
-    return new Response(200, {}, { quizQuestions: quizToPlay.questions });
+    if (!userId) {
+      return new Response(
+        404,
+        {},
+        {
+          errors: ["The email you entered is not Registered. Not Found error"],
+        }
+      );
+    }
+    const quizToPlay = schema.quizzes.findBy({ _id: quizId }).attrs.questions;
+    return new Response(200, {}, { quizQuestions: quizToPlay });
   } catch (error) {
     return new Response(
       500,
@@ -22,6 +36,8 @@ export const getSingleQuizQuestionsHandler = function (schema, request) {
 };
 
 export const postQuizResultHandler = function (schema, request) {
+  const { answer } = JSON.parse(request.requestBody);
+  const quizId = request.params.quizId;
   const userId = requiresAuth.call(this, request);
   try {
     if (!userId) {
@@ -33,17 +49,48 @@ export const postQuizResultHandler = function (schema, request) {
         }
       );
     }
-    const quizId = request.params.quizId;
-    const quizPlayedAnswers = schema.quiz.findBy({ _id: quizId }).answers;
-    let userTotalScore = schema.users.findBy({ _id: userId }).totalScore;
-    const { answer } = JSON.parse(request.requestBody);
-    let currentQuizScore = quizPlayedAnswers.reduce(
-      (acc, curr, index) => (acc += curr[index] === answer[index] ? 5 : 0),
+    const quizAnswers = schema.quizzes.findBy({ _id: quizId }).attrs.answers;
+    let currentQuizScore = quizAnswers.reduce(
+      (acc, curr, index) => (acc += curr === answer[index] ? 5 : 0),
       0
     );
+    let userTotalScore = schema.users.findBy({ _id: userId }).attrs.totalScore;
     userTotalScore += currentQuizScore;
     this.db.users.update({ _id: userId }, { totalScore: userTotalScore });
-    return new Response(201, {}, { quizResult: currentQuizScore });
+    return new Response(
+      200,
+      {},
+      {
+        quizResult: currentQuizScore,
+        quizAnswers: quizAnswers,
+        totalScore: userTotalScore,
+      }
+    );
+  } catch (error) {
+    return new Response(
+      500,
+      {},
+      {
+        error,
+      }
+    );
+  }
+};
+
+export const getTotalScoreHandler = function (schema, request) {
+  const userId = requiresAuth.call(this, request);
+  try {
+    if (!userId) {
+      return new Response(
+        404,
+        {},
+        {
+          errors: ["The email you entered is not Registered. Not Found error"],
+        }
+      );
+    }
+    const totalScore = schema.users.findBy({ _id: userId }).attrs.totalScore;
+    return new Response(200, {}, { totalScore: totalScore });
   } catch (error) {
     return new Response(
       500,
