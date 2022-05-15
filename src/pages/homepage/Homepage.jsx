@@ -5,18 +5,22 @@ import "./homepage.css";
 
 export const Homepage = () => {
   useDocumentTitle("Home");
-  const { quizNamesFromDB } = useQuiz();
+  const { quizNamesFromDB, resetCurrentQuiz } = useQuiz();
   const navigate = useNavigate();
+
   return (
     <main className="homepage-main">
       <div className="category-wrapper">
-        {quizNamesFromDB.map((category, index) => (
+        {quizNamesFromDB.map((categoryObj, index) => (
           <div
             className="category-card"
             key={index}
-            onClick={() => navigate(`/${category}`)}
+            onClick={() => {
+              navigate(`/${categoryObj._id}`);
+              resetCurrentQuiz();
+            }}
           >
-            {category}
+            {categoryObj.title}
           </div>
         ))}
       </div>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAuth } from "../../contexts";
+import { useAuth, useQuiz } from "../../contexts";
 import { useDocumentTitle } from "../../utils";
 import "./user.css";
 
@@ -9,6 +9,7 @@ export const User = () => {
   const [togglePass, setTogglePass] = useState(false);
   const togglePassView = () => setTogglePass((x) => !x);
 
+  const { totalScore } = useQuiz();
   return (
     <main className="user-main">
       <div className="heading">User Profile</div>
@@ -42,6 +43,10 @@ export const User = () => {
             </li>
           </ul>
         </div>
+      </div>
+      <div className="user-score-wrapper">
+        <h2 className="score-heading">Score Details</h2>
+        {totalScore}
       </div>
     </main>
   );

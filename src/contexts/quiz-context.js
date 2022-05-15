@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { createContext, useContext, useEffect, useState } from "react";
 import { useAxios } from "../utils";
+import { useAuth } from "./auth-context";
 
 const QuizContext = createContext();
 
@@ -36,12 +37,19 @@ const QuizProvider = ({ children }) => {
     responseScore !== undefined && setTotalScore(responseScore.totalScore);
   }, [responseScore]);
 
+  const { isUserLoggedIn } = useAuth();
+  useEffect(() => {
+    isUserLoggedIn ? getTotalScore() : setTotalScore(0);
+  }, [isUserLoggedIn]);
+
   //Current quiz from DB
-  const [currentQuiz, setCurrentQuiz] = useState({
+  const initialCurrentQuizState = {
     questions: [],
     answers: [],
     score: 0,
-  });
+  };
+  const [currentQuiz, setCurrentQuiz] = useState(initialCurrentQuizState);
+  const resetCurrentQuiz = () => setCurrentQuiz(initialCurrentQuizState);
   const { response: responseQuiz, operation: operationQuiz } = useAxios();
   const getQuizQuestions = (quizId) => {
     operationQuiz({
@@ -92,7 +100,7 @@ const QuizProvider = ({ children }) => {
         totalScore,
         getQuizQuestions,
         postQuizAnswers,
-        getTotalScore,
+        resetCurrentQuiz,
       }}
     >
       {children}

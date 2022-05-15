@@ -5,7 +5,12 @@ export const getAllQuizNameHandler = function () {
   return new Response(
     200,
     {},
-    { quizNames: this.db.quizzes.map((item) => item.title) }
+    {
+      quizNames: this.db.quizzes.map((item) => ({
+        _id: item._id,
+        title: item.title,
+      })),
+    }
   );
 };
 

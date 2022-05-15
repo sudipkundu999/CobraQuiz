@@ -3,7 +3,7 @@
 export const quizzes = [
   {
     _id: "quiz01",
-    title: "HTML, CSS, JS",
+    title: "HTML",
     questions: [
       {
         question: "Q1_1",
