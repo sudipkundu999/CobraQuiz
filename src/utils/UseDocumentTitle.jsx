@@ -6,6 +6,6 @@ import { useEffect } from "react";
  */
 export const useDocumentTitle = (pageName) => {
   useEffect(() => {
-    document.title = `CobraTube | ${pageName}`;
+    document.title = `CobraQuiz | ${pageName}`;
   }, [pageName]);
 };

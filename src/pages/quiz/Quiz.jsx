@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Rules } from "../../components/rules/Rules";
 import { useQuiz } from "../../contexts";
-import { notifySuccess } from "../../utils";
+import { notifySuccess, useDocumentTitle } from "../../utils";
 import "./quiz.css";
 
 export const Quiz = () => {
@@ -10,6 +10,7 @@ export const Quiz = () => {
   const { quizNamesFromDB, currentQuiz, postQuizAnswers, resetCurrentQuiz } =
     useQuiz();
   const quizName = quizNamesFromDB.find((quiz) => quiz._id === quizId)?.name;
+  useDocumentTitle(quizName);
 
   const [isRulesAccepted, setIsRulesAccepted] = useState(false);
   const rulesAccepted = () => setIsRulesAccepted(true);
@@ -58,7 +59,9 @@ export const Quiz = () => {
         <div className="quiz-player-wrapper">
           {currentQuiz.questions.map((item, index) => (
             <div className="list-container quiz-player" key={index}>
-              <div className="list-heading quiz-question">{item.question}</div>
+              <div className="list-heading quiz-question">
+                {index + 1}. {item.question}
+              </div>
               <ul className="list">
                 {item.options.map((option, i) => (
                   <li

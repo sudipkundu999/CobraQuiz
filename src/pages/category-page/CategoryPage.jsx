@@ -1,14 +1,17 @@
 import { useParams } from "react-router-dom";
 import { CategoryCard } from "../../components";
 import { useQuiz } from "../../contexts";
+import { useDocumentTitle } from "../../utils";
 import "./category-page.css";
 
 export const CategoryPage = () => {
   const { category } = useParams();
+  useDocumentTitle(category);
   const { quizNamesFromDB } = useQuiz();
   const quizNamesByCategory = quizNamesFromDB.filter(
     (item) => item.category === category
   );
+
   return (
     <main className="category-main">
       <h2>Showing only {category} quizzes</h2>
