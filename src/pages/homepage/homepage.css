@@ -3,26 +3,22 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  gap: 2rem;
+}
+
+.hero-image-wrapper {
+  width: 95vw;
+  max-width: 75rem;
+  border-radius: 10px;
+  font-size: 0;
+  padding: 1.5rem;
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .category-wrapper {
   display: flex;
   flex-wrap: wrap;
-  gap: 2rem;
-}
-
-.category-card {
-  background-color: var(--secondary);
-  color: var(--white);
-  height: 27rem;
-  width: 27rem;
-  display: flex;
   justify-content: center;
-  align-items: center;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-.category-card:hover {
-  outline: 1px solid var(--primary);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
 }

@@ -9,6 +9,7 @@
   font-size: 3rem;
   font-weight: 600;
   margin: 2.5rem 0;
+  text-align: center;
 }
 
 .list-container {
@@ -50,10 +51,23 @@
 
 .quiz-player {
   margin-bottom: 2rem;
+  width: 40rem;
+}
+
+.quiz-question {
+  text-align: center;
 }
 
 .quiz-answer {
   cursor: pointer;
+}
+
+.quiz-answer:hover {
+  background-color: var(--secondary);
+}
+
+.quiz-answer span {
+  font-weight: 600;
 }
 
 .quiz-answer-selected {
@@ -69,10 +83,22 @@
 }
 
 .quiz-score {
-  font-size: 3rem;
+  font-size: 2.5rem;
   font-weight: 600;
-  text-decoration: underline;
+  border: 2px solid var(--success);
+  border-radius: 10px;
+  padding: 1rem;
   margin-bottom: 2rem;
+}
+
+.positive-marking {
+  color: var(--success);
+  font-weight: 600;
+}
+
+.negative-marking {
+  color: var(--danger);
+  font-weight: 600;
 }
 
 @media screen and (max-width: 500px) {

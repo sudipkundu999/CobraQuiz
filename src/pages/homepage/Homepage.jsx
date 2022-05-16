@@ -1,27 +1,24 @@
-import { useNavigate } from "react-router-dom";
+import { CategoryCard } from "../../components";
 import { useQuiz } from "../../contexts";
 import { useDocumentTitle } from "../../utils";
 import "./homepage.css";
 
 export const Homepage = () => {
   useDocumentTitle("Home");
-  const { quizNamesFromDB, resetCurrentQuiz } = useQuiz();
-  const navigate = useNavigate();
+  const { quizNamesFromDB } = useQuiz();
 
   return (
     <main className="homepage-main">
+      <div className="hero-image-wrapper">
+        <img
+          className="img-fluid"
+          src={process.env.PUBLIC_URL + "/images/hero.jpg"}
+          alt="hero"
+        />
+      </div>
       <div className="category-wrapper">
         {quizNamesFromDB.map((categoryObj, index) => (
-          <div
-            className="category-card"
-            key={index}
-            onClick={() => {
-              navigate(`/${categoryObj._id}`);
-              resetCurrentQuiz();
-            }}
-          >
-            {categoryObj.title}
-          </div>
+          <CategoryCard key={index} categoryObj={categoryObj} />
         ))}
       </div>
     </main>

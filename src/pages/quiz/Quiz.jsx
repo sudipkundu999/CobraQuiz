@@ -26,8 +26,12 @@ export const Quiz = () => {
   const isQuizSubmitted = currentQuiz.answers.length !== 0;
   return (
     <main className="quiz-main">
-      <div className="heading">You're going to play {quizName} quiz</div>
-      {currentQuiz.answers.length !== 0 && (
+      <div className="heading">
+        {isQuizSubmitted
+          ? "Quiz Results"
+          : `You're going to play ${quizName} quiz`}
+      </div>
+      {isQuizSubmitted && (
         <div className="quiz-score">YOU SCORED {currentQuiz.score}/20</div>
       )}
       {!isRulesAccepted && (
@@ -56,7 +60,7 @@ export const Quiz = () => {
                     }`}
                     onClick={() => !isQuizSubmitted && selectOption(index, i)}
                   >
-                    {option}
+                    <span>{String.fromCharCode(65 + i)}.</span> {option}
                   </li>
                 ))}
               </ul>
