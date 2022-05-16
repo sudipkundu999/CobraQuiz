@@ -33,6 +33,7 @@
 
 .list {
   list-style: none;
+  width: 100%;
 }
 
 .list-item {
@@ -55,7 +56,7 @@
 }
 
 .quiz-question {
-  text-align: center;
+  text-align: left;
 }
 
 .quiz-answer {
