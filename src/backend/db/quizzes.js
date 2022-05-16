@@ -6,68 +6,114 @@ export const quizzes = [
     title: "HTML",
     questions: [
       {
-        question: "Q1_1",
-        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+        question: "What does HTML stand for?",
+        options: [
+          "Hyper Text Markup Language",
+          "Hyper Text Marking Language",
+          "Hero Text Markup Language",
+          "Hyper Text Main Language",
+        ],
       },
       {
-        question: "Q2_1",
-        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+        question:
+          "What is the difference between an opening tag and a closing tag?",
+        options: [
+          "Closing tag has a ~ in front",
+          "Opening tag has a / in front",
+          "Closing tag has a / in front",
+          "There is no difference",
+        ],
       },
       {
-        question: "Q3_1",
-        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+        question: "How is document type initialized in HTML5?",
+        options: [
+          "<!DOCTYPE=html>",
+          "</DOCTYPE=html>",
+          "<!DOCTYPE html>",
+          "</DOCTYPE html>",
+        ],
       },
       {
-        question: "Q4_1",
-        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+        question:
+          "Which of the following HTML element is used for creating an unordered list?",
+        options: ["<ui>", "<ol>", "<li>", "<ul>"],
       },
     ],
-    answers: [2, 0, 1, 3],
+    answers: [0, 2, 2, 3],
   },
   {
     _id: "quiz02",
     title: "CSS",
     questions: [
       {
-        question: "Q1_2",
-        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+        question: "Which of the below is the abbreviation of CSS ?",
+        options: [
+          "Cascade sheets style",
+          "Color and style sheets",
+          "Cascading style sheets",
+          "Coded Style Sheet",
+        ],
       },
       {
-        question: "Q2_2",
-        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+        question:
+          "Which of the correct syntax to add the external stylesheet in CSS ?",
+        options: [
+          "<style src = quiz.css>",
+          '<style src = "quiz.css">',
+          "<stylesheet> quiz.css </stylesheet>",
+          '<link rel="stylesheet" type="quiz/css" href="quiz.css">',
+        ],
       },
       {
-        question: "Q3_2",
-        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+        question:
+          "Which of the below CSS properties is used to change the background color of CSS ?",
+        options: ["background-color", "color-background", "color", "bg color"],
       },
       {
-        question: "Q4_2",
-        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+        question:
+          "Which of the below is correct syntax when we put a line over text in CSS ?",
+        options: [
+          "text-decoration: line",
+          "text-decoration: underline",
+          "text-decoration: overline",
+          "text-decoration: none",
+        ],
       },
     ],
-    answers: [3, 2, 1, 0],
+    answers: [2, 3, 0, 2],
   },
   {
     _id: "quiz03",
     title: "JS",
     questions: [
       {
-        question: "Q1_3",
-        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+        question: "Inside which HTML element do we put the JavaScript?",
+        options: ["<scripting>", "<javascript>", "<script>", "<js>"],
       },
       {
-        question: "Q2_3",
-        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+        question:
+          'What is the correct syntax for referring to an external script called "cobra.js"?',
+        options: [
+          '<script src="cobra.js">',
+          '<script href="cobra.js">',
+          '<script name="cobra.js">',
+          '<script="cobra.js">',
+        ],
       },
       {
-        question: "Q3_3",
-        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+        question: 'How do you write "Hello World" in an alert box?',
+        options: [
+          ' message("Hello World")',
+          'toast("Hello World")',
+          'modal("Hello World")',
+          'alert("Hello World")',
+        ],
       },
       {
-        question: "Q4_3",
-        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+        question: "A variable can be declared in js using ?",
+        options: ["var", "let", "const", "All of above"],
       },
     ],
-    answers: [2, 0, 3, 1],
+    answers: [2, 0, 3, 3],
   },
 ];

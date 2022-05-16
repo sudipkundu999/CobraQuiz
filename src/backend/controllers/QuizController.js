@@ -56,7 +56,7 @@ export const postQuizResultHandler = function (schema, request) {
     }
     const quizAnswers = schema.quizzes.findBy({ _id: quizId }).attrs.answers;
     let currentQuizScore = quizAnswers.reduce(
-      (acc, curr, index) => (acc += curr === answer[index] ? 5 : 0),
+      (acc, curr, index) => (acc += curr === answer[index] ? 5 : -1),
       0
     );
     let userTotalScore = schema.users.findBy({ _id: userId }).attrs.totalScore;
