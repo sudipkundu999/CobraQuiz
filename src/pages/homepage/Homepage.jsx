@@ -5,7 +5,7 @@ import "./homepage.css";
 
 export const Homepage = () => {
   useDocumentTitle("Home");
-  const { quizNamesFromDB } = useQuiz();
+  const { quizCategoryFromDB } = useQuiz();
 
   return (
     <main className="homepage-main">
@@ -16,9 +16,15 @@ export const Homepage = () => {
           alt="hero"
         />
       </div>
+      <h2>Quiz by Category</h2>
       <div className="category-wrapper">
-        {quizNamesFromDB.map((categoryObj, index) => (
-          <CategoryCard key={index} categoryObj={categoryObj} />
+        {quizCategoryFromDB.map((category, index) => (
+          <CategoryCard
+            key={index}
+            img={category}
+            url={category}
+            name={category}
+          />
         ))}
       </div>
     </main>

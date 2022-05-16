@@ -101,6 +101,10 @@
   font-weight: 600;
 }
 
+.quit-quiz {
+  margin-bottom: 2rem;
+}
+
 @media screen and (max-width: 500px) {
   .rules-modal {
     font-size: 1.65rem;

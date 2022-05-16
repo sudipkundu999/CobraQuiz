@@ -1,14 +1,16 @@
 import { Response } from "miragejs";
 import { requiresAuth } from "../utils/authUtils";
 
-export const getAllQuizNameHandler = function () {
+export const getAllQuizCategoryHandler = function () {
   return new Response(
     200,
     {},
     {
-      quizNames: this.db.quizzes.map((item) => ({
+      quizCategory: this.db.categories.map((item) => item.categoryName),
+      quizNamesByCategory: this.db.quizzes.map((item) => ({
         _id: item._id,
-        title: item.title,
+        name: item.title,
+        category: item.category,
       })),
     }
   );

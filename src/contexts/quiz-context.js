@@ -10,13 +10,16 @@ const useQuiz = () => useContext(QuizContext);
 const QuizProvider = ({ children }) => {
   //Initial Fetching of Quiz Names from DB
   const [quizNamesFromDB, setQuizNamesFromDB] = useState([]);
+  const [quizCategoryFromDB, setQuizCategoryFromDB] = useState([]);
   const { response: responseQuizNames, operation: fetchQuizNames } = useAxios();
   useEffect(() => {
-    fetchQuizNames({ method: "GET", url: "/api/quiz" });
+    fetchQuizNames({ method: "GET", url: "/api/quiz/category" });
   }, []);
   useEffect(() => {
-    responseQuizNames !== undefined &&
-      setQuizNamesFromDB(responseQuizNames.quizNames);
+    if (responseQuizNames !== undefined) {
+      setQuizNamesFromDB(responseQuizNames.quizNamesByCategory);
+      setQuizCategoryFromDB(responseQuizNames.quizCategory);
+    }
   }, [responseQuizNames]);
 
   //Total score from DB
@@ -96,6 +99,7 @@ const QuizProvider = ({ children }) => {
     <QuizContext.Provider
       value={{
         quizNamesFromDB,
+        quizCategoryFromDB,
         currentQuiz,
         totalScore,
         getQuizQuestions,

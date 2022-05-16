@@ -1,13 +1,15 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Rules } from "../../components/rules/Rules";
 import { useQuiz } from "../../contexts";
+import { notifySuccess } from "../../utils";
 import "./quiz.css";
 
 export const Quiz = () => {
   const { quizId } = useParams();
-  const { quizNamesFromDB, currentQuiz, postQuizAnswers } = useQuiz();
-  const quizName = quizNamesFromDB.find((quiz) => quiz._id === quizId)?.title;
+  const { quizNamesFromDB, currentQuiz, postQuizAnswers, resetCurrentQuiz } =
+    useQuiz();
+  const quizName = quizNamesFromDB.find((quiz) => quiz._id === quizId)?.name;
 
   const [isRulesAccepted, setIsRulesAccepted] = useState(false);
   const rulesAccepted = () => setIsRulesAccepted(true);
@@ -24,6 +26,8 @@ export const Quiz = () => {
   };
 
   const isQuizSubmitted = currentQuiz.answers.length !== 0;
+
+  const navigate = useNavigate();
   return (
     <main className="quiz-main">
       <div className="heading">
@@ -31,6 +35,19 @@ export const Quiz = () => {
           ? "Quiz Results"
           : `You're going to play ${quizName} quiz`}
       </div>
+      {isRulesAccepted && !isQuizSubmitted && (
+        <button
+          className="btn btn-danger quit-quiz"
+          onClick={() => {
+            resetCurrentQuiz();
+            navigate("/");
+            notifySuccess("Quiz quit successfully");
+          }}
+          title="Quitting the quiz will result in losing the saved answers"
+        >
+          Quit Quiz
+        </button>
+      )}
       {isQuizSubmitted && (
         <div className="quiz-score">YOU SCORED {currentQuiz.score}/20</div>
       )}

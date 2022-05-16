@@ -1,7 +1,11 @@
-import { useQuiz } from "../../contexts";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useAuth, useQuiz } from "../../contexts";
 
 export const Rules = ({ quizId, rulesAccepted }) => {
   const { getQuizQuestions } = useQuiz();
+  const { isUserLoggedIn } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   return (
     <div className="list-container">
@@ -28,8 +32,12 @@ export const Rules = ({ quizId, rulesAccepted }) => {
       <button
         className="btn btn-secondary"
         onClick={() => {
-          getQuizQuestions(quizId);
-          rulesAccepted(true);
+          if (isUserLoggedIn) {
+            getQuizQuestions(quizId);
+            rulesAccepted(true);
+          } else {
+            navigate("/login", { state: { from: location }, replace: true });
+          }
         }}
       >
         Accept & Continue

@@ -3,7 +3,8 @@
 export const quizzes = [
   {
     _id: "quiz01",
-    title: "HTML",
+    title: "HTML Easy",
+    category: "HTML",
     questions: [
       {
         question: "What does HTML stand for?",
@@ -43,7 +44,8 @@ export const quizzes = [
   },
   {
     _id: "quiz02",
-    title: "CSS",
+    title: "CSS Easy",
+    category: "CSS",
     questions: [
       {
         question: "Which of the below is the abbreviation of CSS ?",
@@ -84,7 +86,8 @@ export const quizzes = [
   },
   {
     _id: "quiz03",
-    title: "JS",
+    title: "JS Easy",
+    category: "JS",
     questions: [
       {
         question: "Inside which HTML element do we put the JavaScript?",
@@ -115,5 +118,149 @@ export const quizzes = [
       },
     ],
     answers: [2, 0, 3, 3],
+  },
+  {
+    _id: "quiz04",
+    title: "HTML Medium",
+    category: "HTML",
+    questions: [
+      {
+        question: "Q1",
+        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+      },
+      {
+        question: "Q2",
+        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+      },
+      {
+        question: "Q3",
+        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+      },
+      {
+        question: "Q4",
+        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+      },
+    ],
+    answers: [2, 0, 1, 3],
+  },
+  {
+    _id: "quiz05",
+    title: "CSS Medium",
+    category: "CSS",
+    questions: [
+      {
+        question: "Q1",
+        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+      },
+      {
+        question: "Q2",
+        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+      },
+      {
+        question: "Q3",
+        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+      },
+      {
+        question: "Q4",
+        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+      },
+    ],
+    answers: [2, 0, 1, 3],
+  },
+  {
+    _id: "quiz06",
+    title: "JS Medium",
+    category: "JS",
+    questions: [
+      {
+        question: "Q1",
+        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+      },
+      {
+        question: "Q2",
+        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+      },
+      {
+        question: "Q3",
+        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+      },
+      {
+        question: "Q4",
+        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+      },
+    ],
+    answers: [2, 0, 1, 3],
+  },
+  {
+    _id: "quiz07",
+    title: "HTML Hard",
+    category: "HTML",
+    questions: [
+      {
+        question: "Q1",
+        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+      },
+      {
+        question: "Q2",
+        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+      },
+      {
+        question: "Q3",
+        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+      },
+      {
+        question: "Q4",
+        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+      },
+    ],
+    answers: [2, 0, 1, 3],
+  },
+  {
+    _id: "quiz08",
+    title: "CSS Hard",
+    category: "CSS",
+    questions: [
+      {
+        question: "Q1",
+        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+      },
+      {
+        question: "Q2",
+        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+      },
+      {
+        question: "Q3",
+        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+      },
+      {
+        question: "Q4",
+        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+      },
+    ],
+    answers: [2, 0, 1, 3],
+  },
+  {
+    _id: "quiz09",
+    title: "JS Hard",
+    category: "JS",
+    questions: [
+      {
+        question: "Q1",
+        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+      },
+      {
+        question: "Q2",
+        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+      },
+      {
+        question: "Q3",
+        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+      },
+      {
+        question: "Q4",
+        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+      },
+    ],
+    answers: [2, 0, 1, 3],
   },
 ];

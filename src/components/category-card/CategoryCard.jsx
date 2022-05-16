@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useQuiz } from "../../contexts";
 import "./category-card.css";
 
-export const CategoryCard = ({ categoryObj }) => {
+export const CategoryCard = ({ img, url, name }) => {
   const { resetCurrentQuiz } = useQuiz();
   const navigate = useNavigate();
 
@@ -10,18 +10,18 @@ export const CategoryCard = ({ categoryObj }) => {
     <div className="category-card-wrapper">
       <div className="category-card">
         <img
-          src={process.env.PUBLIC_URL + `/images/${categoryObj._id}.jpg`}
+          src={process.env.PUBLIC_URL + `/images/${img}.jpg`}
           className="img-fluid"
-          alt={categoryObj.title}
+          alt={img}
         />
         <div
           className="category-hover"
           onClick={() => {
-            navigate(`/${categoryObj._id}`);
+            navigate(`/${url}`);
             resetCurrentQuiz();
           }}
         >
-          {categoryObj.title}
+          {name}
         </div>
       </div>
     </div>

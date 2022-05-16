@@ -3,7 +3,15 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./toastify.css";
 import { AuthRoutes, Header, RequiresAuth } from "./components";
-import { Homepage, Login, Signup, Page404, User, Quiz } from "./pages";
+import {
+  Homepage,
+  Login,
+  Signup,
+  Page404,
+  User,
+  Quiz,
+  CategoryPage,
+} from "./pages";
 
 function App() {
   return (
@@ -25,7 +33,8 @@ function App() {
             <Route path="/user" element={<User />} />
           </Route>
 
-          <Route path="/:quizId" element={<Quiz />} />
+          <Route path="/:category" element={<CategoryPage />} />
+          <Route path="/:category/:quizId" element={<Quiz />} />
           <Route path="*" element={<Page404 />} />
         </Routes>
       </div>
