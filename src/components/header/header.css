@@ -33,6 +33,13 @@ main {
   background-color: var(--secondary);
 }
 
+.search-wrapper {
+  border: none;
+  color: black;
+  background-color: inherit;
+  font-size: 1.5rem;
+}
+
 @media screen and (max-width: 400px) {
   .navigation-container {
     padding: 0 1rem;
