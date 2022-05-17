@@ -16,7 +16,7 @@ export const Homepage = () => {
           alt="hero"
         />
       </div>
-      <h2>Quiz by Category</h2>
+      <h2 className="heading">Quiz by Category</h2>
       <div className="category-wrapper">
         {quizCategoryFromDB.map((category, index) => (
           <CategoryCard

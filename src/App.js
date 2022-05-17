@@ -2,7 +2,12 @@ import { Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./toastify.css";
-import { AuthRoutes, Header, RequiresAuth } from "./components";
+import {
+  AuthRoutes,
+  Header,
+  RequiresAuth,
+  ThemeToggleButton,
+} from "./components";
 import {
   Homepage,
   Login,
@@ -12,12 +17,15 @@ import {
   Quiz,
   CategoryPage,
 } from "./pages";
+import { useTheme } from "./contexts";
 
 function App() {
+  const { theme } = useTheme();
   return (
-    <div>
+    <div className={theme === "dark" ? "dark-mode-class" : ""}>
       <Header />
       <ToastContainer />
+      <ThemeToggleButton />
 
       <div className="app">
         <Routes>

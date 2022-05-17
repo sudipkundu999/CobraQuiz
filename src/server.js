@@ -6,7 +6,6 @@ import {
 } from "./backend/controllers/AuthController";
 import {
   getAllQuizCategoryHandler,
-  getAllQuizNameHandler,
   getQuizQuestionsHandler,
   getTotalScoreHandler,
   postQuizResultHandler,

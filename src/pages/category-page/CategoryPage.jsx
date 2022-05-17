@@ -14,7 +14,7 @@ export const CategoryPage = () => {
 
   return (
     <main className="category-main">
-      <h2>Showing only {category} quizzes</h2>
+      <h2 className="heading">Showing only {category} quizzes</h2>
       <div className="quiz-names-by-category-wrapper">
         {quizNamesByCategory.map((item, i) => (
           <CategoryCard
