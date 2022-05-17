@@ -64,7 +64,7 @@ const AuthProvider = ({ children }) => {
       setFormData(initialFromState);
       notifySuccess("Login Successful");
       localStorage.setItem("cobraToken", responseLogin.encodedToken);
-      navigate(location.state?.from?.pathname || "/user");
+      navigate(location.state?.from?.pathname || "/");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [responseLogin]);
