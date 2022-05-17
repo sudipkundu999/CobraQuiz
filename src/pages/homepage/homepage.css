@@ -1,0 +1,24 @@
+.homepage-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 2rem;
+}
+
+.hero-image-wrapper {
+  width: 95vw;
+  max-width: 75rem;
+  border-radius: 10px;
+  font-size: 0;
+  padding: 1.5rem;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.category-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}

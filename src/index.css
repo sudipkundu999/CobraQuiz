@@ -4,3 +4,25 @@
 body {
   background-color: var(--white-light);
 }
+
+.dark-mode-toggle {
+  position: fixed;
+  right: 2rem;
+  bottom: 2rem;
+  transform: scale(0.9);
+}
+
+.dark-mode-class {
+  background: #162538;
+}
+
+.dark-mode-class .heading,
+.dark-mode-class .list-heading,
+.dark-mode-class .quiz-score {
+  color: var(--white) !important;
+}
+
+.dark-mode-class .hero-image-wrapper,
+.dark-mode-class .category-card-wrapper {
+  background-color: rgba(255, 255, 255, 0.15);
+}

@@ -1,0 +1,47 @@
+header {
+  height: 6rem;
+  z-index: 5;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+main {
+  min-height: 100vh;
+  width: 100%;
+  padding: 7rem 1rem 1rem 1rem;
+  font-size: 3rem;
+}
+
+.navigation-container {
+  background-color: var(--black);
+  gap: 1rem;
+}
+
+.header-badge {
+  position: absolute;
+  top: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.3rem;
+  font-weight: 600;
+  padding: 2px;
+  min-width: 1.5rem;
+  min-height: 1.5rem;
+  border-radius: 50%;
+  background-color: var(--secondary);
+}
+
+.search-wrapper {
+  border: none;
+  color: black;
+  background-color: inherit;
+  font-size: 1.5rem;
+}
+
+@media screen and (max-width: 400px) {
+  .navigation-container {
+    padding: 0 1rem;
+  }
+}

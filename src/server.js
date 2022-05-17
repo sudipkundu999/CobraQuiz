@@ -5,13 +5,15 @@ import {
   verifyUser,
 } from "./backend/controllers/AuthController";
 import {
-  getAllQuizNameHandler,
-  getSingleQuizQuestionsHandler,
+  getAllQuizCategoryHandler,
+  getQuizQuestionsHandler,
+  getTotalScoreHandler,
   postQuizResultHandler,
 } from "./backend/controllers/QuizController";
 
-import { quiz } from "./backend/db/quiz";
+import { quizzes } from "./backend/db/quizzes";
 import { users } from "./backend/db/users";
+import { categories } from "./backend/db/categories";
 
 export function makeServer({ environment = "development" } = {}) {
   return new Server({
@@ -21,6 +23,7 @@ export function makeServer({ environment = "development" } = {}) {
     environment,
     models: {
       quiz: Model,
+      category: Model,
       user: Model,
       totalScore: Model,
     },
@@ -29,9 +32,8 @@ export function makeServer({ environment = "development" } = {}) {
     seeds(server) {
       // disabling console logs from Mirage
       server.logging = false;
-      quiz.forEach((item) => {
+      quizzes.forEach((item) => {
         server.create("quiz", item);
-        // console.log(item);
       });
 
       users.forEach((item) =>
@@ -40,6 +42,8 @@ export function makeServer({ environment = "development" } = {}) {
           totalScore: 0,
         })
       );
+
+      categories.forEach((item) => server.create("category", { ...item }));
     },
 
     routes() {
@@ -51,11 +55,14 @@ export function makeServer({ environment = "development" } = {}) {
       this.post("/auth/verify", verifyUser.bind(this));
 
       // quiz routes (public)
-      this.get("/quiz", getAllQuizNameHandler.bind(this));
-      this.get("/quiz/:quizId", getSingleQuizQuestionsHandler.bind(this));
+      this.get("/quiz/category", getAllQuizCategoryHandler.bind(this));
 
       // quiz routes (private)
-      this.post("/quiz/result", postQuizResultHandler.bind(this));
+      this.get("/quiz/questions/:quizId", getQuizQuestionsHandler.bind(this));
+      this.post("/quiz/results/:quizId", postQuizResultHandler.bind(this));
+
+      // score route (private)
+      this.get("/user/score", getTotalScoreHandler.bind(this));
     },
   });
 }
