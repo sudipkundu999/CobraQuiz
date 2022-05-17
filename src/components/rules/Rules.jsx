@@ -7,6 +7,15 @@ export const Rules = ({ quizId, rulesAccepted }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const acceptRulesHandler = () => {
+    if (isUserLoggedIn) {
+      getQuizQuestions(quizId);
+      rulesAccepted(true);
+    } else {
+      navigate("/login", { state: { from: location }, replace: true });
+    }
+  };
+
   return (
     <div className="list-container">
       <div className="list-heading">Accept the rules to continue</div>
@@ -31,14 +40,7 @@ export const Rules = ({ quizId, rulesAccepted }) => {
       </ul>
       <button
         className="btn btn-secondary"
-        onClick={() => {
-          if (isUserLoggedIn) {
-            getQuizQuestions(quizId);
-            rulesAccepted(true);
-          } else {
-            navigate("/login", { state: { from: location }, replace: true });
-          }
-        }}
+        onClick={() => acceptRulesHandler()}
       >
         Accept & Continue
       </button>
