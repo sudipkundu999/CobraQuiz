@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Rules } from "../../components/rules/Rules";
 import { useQuiz } from "../../contexts";
 import { notifySuccess, useDocumentTitle } from "../../utils";
@@ -27,6 +27,14 @@ export const Quiz = () => {
   };
 
   const isQuizSubmitted = currentQuiz.answers.length !== 0;
+
+  const location = useLocation();
+  useEffect(() => {
+    resetCurrentQuiz();
+    setIsRulesAccepted(false);
+    setCurrentAnswer([4, 4, 4, 4]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname]);
 
   const navigate = useNavigate();
   return (

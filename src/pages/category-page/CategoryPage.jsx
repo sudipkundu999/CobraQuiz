@@ -20,7 +20,7 @@ export const CategoryPage = () => {
           <CategoryCard
             key={i}
             img={category}
-            url={`:category/${item._id}`}
+            url={`${category}/${item._id}`}
             name={item.name}
           />
         ))}
