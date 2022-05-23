@@ -1,6 +1,6 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+import { doc, getDoc } from "firebase/firestore";
 import { createContext, useContext, useEffect, useState } from "react";
-import { useAxios } from "../utils";
+import { db } from "../firebaseConfig";
 import { useAuth } from "./auth-context";
 
 const QuizContext = createContext();
@@ -8,44 +8,19 @@ const QuizContext = createContext();
 const useQuiz = () => useContext(QuizContext);
 
 const QuizProvider = ({ children }) => {
-  //Initial Fetching of Quiz Names from DB
+  const { updateScore } = useAuth();
   const [quizNamesFromDB, setQuizNamesFromDB] = useState([]);
   const [quizCategoryFromDB, setQuizCategoryFromDB] = useState([]);
-  const { response: responseQuizNames, operation: fetchQuizNames } = useAxios();
   useEffect(() => {
-    fetchQuizNames({ method: "GET", url: "/api/quiz/category" });
+    (async () => {
+      const categorySnapshot = await getDoc(doc(db, "quiz/category"));
+      setQuizCategoryFromDB(categorySnapshot.data().quizCategory);
+
+      const namesSnapshot = await getDoc(doc(db, "quiz/names"));
+      setQuizNamesFromDB(namesSnapshot.data().quizNamesByCategory);
+    })();
   }, []);
-  useEffect(() => {
-    if (responseQuizNames !== undefined) {
-      setQuizNamesFromDB(responseQuizNames.quizNamesByCategory);
-      setQuizCategoryFromDB(responseQuizNames.quizCategory);
-    }
-  }, [responseQuizNames]);
 
-  //Total score from DB
-  const [totalScore, setTotalScore] = useState(0);
-  const { response: responseScore, operation: operationScore } = useAxios();
-  const getTotalScore = () => {
-    operationScore({
-      method: "GET",
-      url: `/api/user/score`,
-      headers: {
-        accept: "*/*",
-        authorization: localStorage.getItem("cobraToken"),
-      },
-      data: {},
-    });
-  };
-  useEffect(() => {
-    responseScore !== undefined && setTotalScore(responseScore.totalScore);
-  }, [responseScore]);
-
-  const { isUserLoggedIn } = useAuth();
-  useEffect(() => {
-    isUserLoggedIn ? getTotalScore() : setTotalScore(0);
-  }, [isUserLoggedIn]);
-
-  //Current quiz from DB
   const initialCurrentQuizState = {
     questions: [],
     answers: [],
@@ -53,47 +28,29 @@ const QuizProvider = ({ children }) => {
   };
   const [currentQuiz, setCurrentQuiz] = useState(initialCurrentQuizState);
   const resetCurrentQuiz = () => setCurrentQuiz(initialCurrentQuizState);
-  const { response: responseQuiz, operation: operationQuiz } = useAxios();
-  const getQuizQuestions = (quizId) => {
-    operationQuiz({
-      method: "GET",
-      url: `/api/quiz/questions/${quizId}`,
-      headers: {
-        accept: "*/*",
-        authorization: localStorage.getItem("cobraToken"),
-      },
-      data: {},
-    });
+  const getQuizQuestions = async (quizId) => {
+    const res = await getDoc(doc(db, `quiz/${quizId}-questions`));
+    const questions = res.data().questions;
+    setCurrentQuiz((prev) => ({
+      ...prev,
+      questions: questions,
+    }));
   };
-  const postQuizAnswers = (quizId, answer) => {
-    operationQuiz({
-      method: "POST",
-      url: `/api/quiz/results/${quizId}`,
-      headers: {
-        accept: "*/*",
-        authorization: localStorage.getItem("cobraToken"),
-      },
-      data: { answer: answer },
-    });
+
+  const postQuizAnswers = async (quizId, answer) => {
+    const res = await getDoc(doc(db, `quiz/${quizId}-answers`));
+    const answers = res.data().answers;
+    const score = answers.reduce(
+      (acc, curr, index) => acc + (curr === answer[index] ? 5 : -1),
+      0
+    );
+    setCurrentQuiz((prev) => ({
+      ...prev,
+      answers: answers,
+      score: score,
+    }));
+    updateScore(score);
   };
-  useEffect(() => {
-    if (responseQuiz !== undefined) {
-      if (responseQuiz.quizQuestions) {
-        setCurrentQuiz((prev) => ({
-          ...prev,
-          questions: responseQuiz.quizQuestions,
-        }));
-      }
-      if (responseQuiz.quizAnswers) {
-        setCurrentQuiz((prev) => ({
-          ...prev,
-          answers: responseQuiz.quizAnswers,
-          score: responseQuiz.quizResult,
-        }));
-        setTotalScore(responseQuiz.totalScore);
-      }
-    }
-  }, [responseQuiz]);
 
   return (
     <QuizContext.Provider
@@ -101,7 +58,6 @@ const QuizProvider = ({ children }) => {
         quizNamesFromDB,
         quizCategoryFromDB,
         currentQuiz,
-        totalScore,
         getQuizQuestions,
         postQuizAnswers,
         resetCurrentQuiz,

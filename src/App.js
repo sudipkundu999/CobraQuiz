@@ -30,7 +30,6 @@ function App() {
       <div className="app">
         <Routes>
           <Route path="/" element={<Homepage />} />
-          {/* <Route path="/" element={<Mock />} /> */}
 
           <Route element={<AuthRoutes />}>
             <Route path="/login" element={<Login />} />

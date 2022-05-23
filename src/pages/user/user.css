@@ -34,7 +34,8 @@
 }
 
 .profile-heading,
-.score-heading {
+.score-heading,
+.quiz-played-heading {
   text-align: center;
   border-bottom: 1px solid var(--white);
   margin-bottom: 1rem;
@@ -57,7 +58,8 @@
   position: relative;
 }
 
-.user-score-wrapper {
+.user-score-wrapper,
+.user-quiz-played-wrapper {
   min-width: 40rem;
   color: var(--white);
   text-align: center;
