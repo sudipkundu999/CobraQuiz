@@ -1,12 +1,22 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { notifyError, notifyInfo, notifySuccess, useAxios } from "../utils";
+import { notifyError, notifySuccess } from "../utils";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+} from "firebase/auth";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { db } from "../firebaseConfig";
 
 const AuthContext = createContext();
 
 const useAuth = () => useContext(AuthContext);
 
 const AuthProvider = ({ children }) => {
+  const auth = getAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const initialFromState = {
@@ -18,148 +28,111 @@ const AuthProvider = ({ children }) => {
   const [formData, setFormData] = useState(initialFromState);
   const [userName, setUserName] = useState("Login");
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
-  const [userData, setUserData] = useState({
+  const initialUserData = {
     firstName: "",
     lastName: "",
     email: "",
     password: "",
-  });
-
-  //Login
-  const {
-    response: responseLogin,
-    error: errorLogin,
-    operation: operationLogin,
-  } = useAxios();
-
-  const onSubmitLogin = (e) => {
-    e.preventDefault();
-    operationLogin({
-      method: "post",
-      url: "/api/auth/login",
-      headers: { accept: "*/*" },
-      data: { email: formData.email, password: formData.password },
-    });
+    uid: "",
+    totalScore: 0,
+    totalQuizPlayed: 0,
   };
+  const [userData, setUserData] = useState(initialUserData);
 
-  const loginAsGuest = () => {
-    operationLogin({
-      method: "post",
-      url: "/api/auth/login",
-      headers: { accept: "*/*" },
-      data: { email: "neog@cobraquiz.com", password: "neogcamp" },
-    });
-  };
-
-  useEffect(() => {
-    if (responseLogin !== undefined) {
-      setUserName(responseLogin.foundUser.firstName);
-      setIsUserLoggedIn(true);
-      setUserData({
-        firstName: responseLogin.foundUser.firstName,
-        lastName: responseLogin.foundUser.lastName,
-        email: responseLogin.foundUser.email,
-        password: formData.password || "cobrastore",
+  const login = async (email, password) => {
+    const res = await signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => userCredential.user.uid)
+      .catch((error) => {
+        notifyError(error.code.split("/")[1]);
       });
-      setFormData(initialFromState);
+    if (res) {
       notifySuccess("Login Successful");
-      localStorage.setItem("cobraToken", responseLogin.encodedToken);
+      setFormData(initialFromState);
       navigate(location.state?.from?.pathname || "/");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [responseLogin]);
-  useEffect(() => {
-    errorLogin !== "" && notifyError("Invalid Email or Password");
-  }, [errorLogin]);
+  };
 
-  //Signup
-  const {
-    response: responseSignup,
-    error: errorSignup,
-    operation: operationSignup,
-  } = useAxios();
-
-  const onSubmitSignup = (e) => {
+  const onSubmitLogin = async (e) => {
     e.preventDefault();
-    operationSignup({
-      method: "post",
-      url: "/api/auth/signup",
-      headers: { accept: "*/*" },
-      data: {
+    login(formData.email, formData.password);
+  };
+
+  const loginAsGuest = async () => {
+    login("neog@cobraquiz.com", "neogcamp");
+  };
+
+  const onSubmitSignup = async (e) => {
+    e.preventDefault();
+    const user = await createUserWithEmailAndPassword(
+      auth,
+      formData.email,
+      formData.password
+    )
+      .then((userCredential) => userCredential.user)
+      .catch(() => notifyError("Email already in use"));
+    if (user) {
+      await setDoc(doc(db, `users/${user.uid}`), {
         firstName: formData.firstName,
         lastName: formData.lastName,
         email: formData.email,
         password: formData.password,
-      },
-    });
+        totalScore: 0,
+        totalQuizPlayed: 0,
+      }).then(() => {
+        notifySuccess("Signup Successful");
+        setFormData(initialFromState);
+        navigate(location.state?.from?.pathname || "/");
+      });
+    }
+  };
+
+  const logoutHandler = async () => {
+    await signOut(auth)
+      .then(() => {
+        setUserName("Login");
+        setIsUserLoggedIn(false);
+        setUserData(initialUserData);
+        notifySuccess("Logged out successfully");
+        navigate("/");
+      })
+      .catch((error) => {
+        notifyError(error.code);
+      });
   };
 
   useEffect(() => {
-    if (responseSignup !== undefined) {
-      setUserName(
-        formData.firstName.charAt(0).toUpperCase() + formData.firstName.slice(1)
-      );
-      setIsUserLoggedIn(true);
-      setUserData({
-        firstName: responseSignup.createdUser.firstName,
-        lastName: responseSignup.createdUser.lastName,
-        email: responseSignup.createdUser.email,
-        password: responseSignup.createdUser.password,
-      });
-      setFormData(initialFromState);
-      notifySuccess("Signup Successful");
-      notifyInfo(
-        "CobraStore currently runs on mock backend so signup details won't persist on page reload"
-      );
-      localStorage.setItem("cobraToken", responseSignup.encodedToken);
-      navigate("/videos");
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [responseSignup]);
-
-  useEffect(() => {
-    errorSignup !== "" && notifyError("Email Already Exists");
-  }, [errorSignup]);
-
-  //First Page load verify
-  const { response: responseVerifyUser, operation: operationVerifyUser } =
-    useAxios();
-  useEffect(() => {
-    operationVerifyUser({
-      method: "post",
-      url: "/api/auth/verify",
-      headers: {
-        accept: "*/*",
-      },
-      data: { encodedToken: localStorage.getItem("cobraToken") },
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const res = await getDoc(doc(db, `/users/${user.uid}`));
+        const data = res.data();
+        setUserData({
+          firstName: data.firstName,
+          lastName: data.lastName,
+          email: data.email,
+          password: data.password,
+          totalScore: data.totalScore,
+          totalQuizPlayed: data.totalQuizPlayed,
+          uid: data.uid.trim(),
+        });
+        setUserName(data.firstName);
+        setIsUserLoggedIn(true);
+      }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  useEffect(() => {
-    if (responseVerifyUser !== undefined) {
-      setUserName(responseVerifyUser.user.firstName);
-      setIsUserLoggedIn(true);
-      setUserData({
-        firstName: responseVerifyUser.user.firstName,
-        lastName: responseVerifyUser.user.lastName,
-        email: responseVerifyUser.user.email,
-        password: responseVerifyUser.user.password,
-      });
-    }
-  }, [responseVerifyUser]);
 
-  const logoutHandler = () => {
-    setUserName("Login");
-    setIsUserLoggedIn(false);
-    setUserData({
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-    });
-    localStorage.removeItem("cobraToken");
-    notifySuccess("Logged out successfully");
-    navigate("/");
+  const updateScore = async (score) => {
+    const newTotalScore = userData.totalScore + score;
+    const newTotalQuizPlayed = userData.totalQuizPlayed + 1;
+    setUserData((prev) => ({
+      ...prev,
+      totalScore: newTotalScore,
+      totalQuizPlayed: newTotalQuizPlayed,
+    }));
+    await updateDoc(doc(db, `/users/${userData.uid}`), {
+      totalScore: newTotalScore,
+      totalQuizPlayed: newTotalQuizPlayed,
+    }).catch((error) => console.log(error.code));
   };
 
   return (
@@ -174,6 +147,7 @@ const AuthProvider = ({ children }) => {
         logoutHandler,
         userData,
         loginAsGuest,
+        updateScore,
       }}
     >
       {children}

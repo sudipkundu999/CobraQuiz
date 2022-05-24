@@ -33,7 +33,7 @@
 
 ### Backend
 
-- [MockBee](https://mockbee.netlify.app/)
+- [Firebase](https://firebase.google.com/)
 
 ---
 
