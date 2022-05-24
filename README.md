@@ -1,14 +1,12 @@
-<<<<<<< HEAD
-### [![Netlify Status](https://api.netlify.com/api/v1/badges/f709f33c-c62f-40da-8f1d-c6a85ca2c43c/deploy-status)](https://app.netlify.com/sites/cobra-quiz-dev/deploys)
-=======
+
 ### [![Netlify Status](https://api.netlify.com/api/v1/badges/06d48ad6-3022-4603-8036-a066cce2b4ae/deploy-status)](https://app.netlify.com/sites/cobra-quiz/deploys)
->>>>>>> 35fc62c (update badge links)
+
 
 <div align="center">
 
 <img alt="logo" src="public\images\logo.png" />
 
-# [CobraQuiz](https://cobra-quiz-dev.netlify.app/)
+# [CobraQuiz](https://cobra-quiz.netlify.app/)
 
 ## CobraQuiz is a quiz app for testing HTML, CSS & JS knowledge.
 
