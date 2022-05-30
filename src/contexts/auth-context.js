@@ -58,7 +58,7 @@ const AuthProvider = ({ children }) => {
   };
 
   const loginAsGuest = async () => {
-    login("neog@cobraquiz.com", "neogcamp");
+    login("alex@cobraquiz.com", "cobraquiz");
   };
 
   const onSubmitSignup = async (e) => {
@@ -78,6 +78,7 @@ const AuthProvider = ({ children }) => {
         password: formData.password,
         totalScore: 0,
         totalQuizPlayed: 0,
+        uid: user.uid.trim(),
       }).then(() => {
         notifySuccess("Signup Successful");
         setFormData(initialFromState);
