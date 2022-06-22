@@ -1,10 +1,11 @@
-const { createContext, useContext, useState, useEffect } = require("react");
+import { createContext, useContext, useState, useEffect } from "react";
+import { UseDarkContext } from "../interfaces";
 
-const ThemeContext = createContext();
+const ThemeContext = createContext({} as any);
 
-const useTheme = () => useContext(ThemeContext);
+const useTheme: UseDarkContext = () => useContext(ThemeContext);
 
-const ThemeProvider = ({ children }) => {
+const ThemeProvider = ({ children }: any) => {
   const [theme, setTheme] = useState(localStorage.getItem("theme"));
 
   const setThemeLight = () => {

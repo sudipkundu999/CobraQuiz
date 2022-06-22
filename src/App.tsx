@@ -19,8 +19,9 @@ import {
 } from "./pages";
 import { useTheme } from "./contexts";
 
-function App() {
+function App(): JSX.Element {
   const { theme } = useTheme();
+
   return (
     <div className={theme === "dark" ? "dark-mode-class" : ""}>
       <Header />

@@ -5,8 +5,9 @@ import { useDocumentTitle } from "../../utils";
 import "./category-page.css";
 
 export const CategoryPage = () => {
+  useDocumentTitle("category");
   const { category } = useParams();
-  useDocumentTitle(category);
+
   const { quizNamesFromDB } = useQuiz();
   const quizNamesByCategory = quizNamesFromDB.filter(
     (item) => item.category === category

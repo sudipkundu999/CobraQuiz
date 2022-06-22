@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useQuiz } from "../../contexts";
 import "./category-card.css";
 
-export const CategoryCard = ({ img, url, name }) => {
+export const CategoryCard = ({ img, url, name }: any) => {
   const { resetCurrentQuiz } = useQuiz();
   const navigate = useNavigate();
 

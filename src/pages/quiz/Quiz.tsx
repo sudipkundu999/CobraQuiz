@@ -16,13 +16,13 @@ export const Quiz = () => {
   const rulesAccepted = () => setIsRulesAccepted(true);
 
   const [currentAnswer, setCurrentAnswer] = useState([4, 4, 4, 4]);
-  const selectOption = (indexOfCurrentAnswerArray, option) =>
+  const selectOption = (indexOfCurrentAnswerArray: number, option: number) =>
     setCurrentAnswer((prev) =>
       prev.map((ans, key) => (key === indexOfCurrentAnswerArray ? option : ans))
     );
 
   const submitQuizHandler = () => {
-    postQuizAnswers(quizId, currentAnswer);
+    postQuizAnswers(quizId as string, currentAnswer);
     window.scrollTo(0, 0);
   };
 
@@ -65,13 +65,13 @@ export const Quiz = () => {
       )}
       {isRulesAccepted && (
         <div className="quiz-player-wrapper">
-          {currentQuiz.questions.map((item, index) => (
+          {currentQuiz.questions.map((q, index) => (
             <div className="list-container quiz-player" key={index}>
               <div className="list-heading quiz-question">
-                {index + 1}. {item.question}
+                {index + 1}. {q.question}
               </div>
               <ul className="list">
-                {item.options.map((option, i) => (
+                {q.options.map((option: string, i: number) => (
                   <li
                     key={i}
                     className={`list-item quiz-answer ${
