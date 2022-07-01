@@ -61,7 +61,7 @@ export const Quiz = () => {
         <div className="quiz-score">YOU SCORED {currentQuiz.score}/20</div>
       )}
       {!isRulesAccepted && (
-        <Rules quizId={quizId} rulesAccepted={rulesAccepted} />
+        <Rules quizId={quizId as string} rulesAccepted={rulesAccepted} />
       )}
       {isRulesAccepted && (
         <div className="quiz-player-wrapper">
