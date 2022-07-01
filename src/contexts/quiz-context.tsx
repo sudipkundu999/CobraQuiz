@@ -1,47 +1,52 @@
-import { doc, getDoc } from "firebase/firestore";
+import { doc, DocumentData, getDoc } from "firebase/firestore";
 import { createContext, useContext, useEffect, useState } from "react";
 import { db } from "../firebaseConfig";
+import { CurrentQuizState, UseQuizContext } from "../interfaces";
 import { useAuth } from "./auth-context";
 
-const QuizContext = createContext();
+const QuizContext = createContext({} as any);
 
-const useQuiz = () => useContext(QuizContext);
+const useQuiz: UseQuizContext = () => useContext(QuizContext);
 
-const QuizProvider = ({ children }) => {
+const QuizProvider = ({ children }: any) => {
   const { updateScore } = useAuth();
   const [quizNamesFromDB, setQuizNamesFromDB] = useState([]);
   const [quizCategoryFromDB, setQuizCategoryFromDB] = useState([]);
   useEffect(() => {
     (async () => {
       const categorySnapshot = await getDoc(doc(db, "quiz/category"));
-      setQuizCategoryFromDB(categorySnapshot.data().quizCategory);
+      const { quizCategory } = categorySnapshot.data() as DocumentData;
+      setQuizCategoryFromDB(quizCategory);
 
       const namesSnapshot = await getDoc(doc(db, "quiz/names"));
-      setQuizNamesFromDB(namesSnapshot.data().quizNamesByCategory);
+      const { quizNamesByCategory } = namesSnapshot.data() as DocumentData;
+      setQuizNamesFromDB(quizNamesByCategory);
     })();
   }, []);
 
-  const initialCurrentQuizState = {
+  const initialCurrentQuizState: CurrentQuizState = {
     questions: [],
     answers: [],
     score: 0,
   };
   const [currentQuiz, setCurrentQuiz] = useState(initialCurrentQuizState);
   const resetCurrentQuiz = () => setCurrentQuiz(initialCurrentQuizState);
-  const getQuizQuestions = async (quizId) => {
+  const getQuizQuestions = async (quizId: string) => {
     const res = await getDoc(doc(db, `quiz/${quizId}-questions`));
-    const questions = res.data().questions;
+
+    const { questions } = res.data() as DocumentData;
     setCurrentQuiz((prev) => ({
       ...prev,
       questions: questions,
     }));
   };
 
-  const postQuizAnswers = async (quizId, answer) => {
+  const postQuizAnswers = async (quizId: string, answer: Array<number>) => {
     const res = await getDoc(doc(db, `quiz/${quizId}-answers`));
-    const answers = res.data().answers;
+    const { answers } = res.data() as DocumentData;
     const score = answers.reduce(
-      (acc, curr, index) => acc + (curr === answer[index] ? 5 : -1),
+      (acc: number, curr: number, index: number) =>
+        acc + (curr === answer[index] ? 5 : -1),
       0
     );
     setCurrentQuiz((prev) => ({

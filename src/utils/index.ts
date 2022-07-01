@@ -1,5 +1,4 @@
 export { useDocumentTitle } from "./UseDocumentTitle";
-
 export {
   notifyDefault,
   notifySuccess,

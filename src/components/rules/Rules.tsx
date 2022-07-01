@@ -1,7 +1,12 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth, useQuiz } from "../../contexts";
 
-export const Rules = ({ quizId, rulesAccepted }) => {
+interface RuleProps {
+  quizId: string;
+  rulesAccepted: Function;
+}
+
+export const Rules = ({ quizId, rulesAccepted }: RuleProps) => {
   const { getQuizQuestions } = useQuiz();
   const { isUserLoggedIn } = useAuth();
   const navigate = useNavigate();

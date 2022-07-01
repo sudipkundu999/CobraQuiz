@@ -21,7 +21,7 @@ export const Header = () => {
         <div className="nav-search search-wrapper">
           <Select
             options={searchOptions}
-            isClearable="true"
+            isClearable={true}
             placeholder="Search"
             onChange={(opt) =>
               opt &&

@@ -5,8 +5,9 @@ import { useDocumentTitle } from "../../utils";
 import "./category-page.css";
 
 export const CategoryPage = () => {
+  useDocumentTitle("category");
   const { category } = useParams();
-  useDocumentTitle(category);
+
   const { quizNamesFromDB } = useQuiz();
   const quizNamesByCategory = quizNamesFromDB.filter(
     (item) => item.category === category
@@ -19,7 +20,7 @@ export const CategoryPage = () => {
         {quizNamesByCategory.map((item, i) => (
           <CategoryCard
             key={i}
-            img={category}
+            img={category as string}
             url={`${category}/${item._id}`}
             name={item.name}
           />

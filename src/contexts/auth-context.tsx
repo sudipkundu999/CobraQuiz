@@ -1,4 +1,10 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  FormEvent,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { notifyError, notifySuccess } from "../utils";
 import {
@@ -7,19 +13,26 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  User,
 } from "firebase/auth";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "../firebaseConfig";
+import {
+  LocationState,
+  LoginFormState,
+  UseAuthContext,
+  UserDataState,
+} from "../interfaces";
 
-const AuthContext = createContext();
+const AuthContext = createContext({} as any);
 
-const useAuth = () => useContext(AuthContext);
+const useAuth: UseAuthContext = () => useContext(AuthContext);
 
-const AuthProvider = ({ children }) => {
+const AuthProvider = ({ children }: any) => {
   const auth = getAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const initialFromState = {
+  const initialFromState: LoginFormState = {
     firstName: "",
     lastName: "",
     email: "",
@@ -28,7 +41,7 @@ const AuthProvider = ({ children }) => {
   const [formData, setFormData] = useState(initialFromState);
   const [userName, setUserName] = useState("Login");
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
-  const initialUserData = {
+  const initialUserData: UserDataState = {
     firstName: "",
     lastName: "",
     email: "",
@@ -39,7 +52,7 @@ const AuthProvider = ({ children }) => {
   };
   const [userData, setUserData] = useState(initialUserData);
 
-  const login = async (email, password) => {
+  const login = async (email: string, password: string) => {
     const res = await signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => userCredential.user.uid)
       .catch((error) => {
@@ -48,11 +61,12 @@ const AuthProvider = ({ children }) => {
     if (res) {
       notifySuccess("Login Successful");
       setFormData(initialFromState);
-      navigate(location.state?.from?.pathname || "/");
+      const locationState = location.state as LocationState;
+      navigate(locationState?.from?.pathname || "/");
     }
   };
 
-  const onSubmitLogin = async (e) => {
+  const onSubmitLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     login(formData.email, formData.password);
   };
@@ -61,7 +75,7 @@ const AuthProvider = ({ children }) => {
     login("alex@cobraquiz.com", "cobraquiz");
   };
 
-  const onSubmitSignup = async (e) => {
+  const onSubmitSignup = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const user = await createUserWithEmailAndPassword(
       auth,
@@ -70,19 +84,21 @@ const AuthProvider = ({ children }) => {
     )
       .then((userCredential) => userCredential.user)
       .catch(() => notifyError("Email already in use"));
+    const { uid } = user as User;
     if (user) {
-      await setDoc(doc(db, `users/${user.uid}`), {
+      await setDoc(doc(db, `users/${uid}`), {
         firstName: formData.firstName,
         lastName: formData.lastName,
         email: formData.email,
         password: formData.password,
         totalScore: 0,
         totalQuizPlayed: 0,
-        uid: user.uid.trim(),
+        uid: uid.trim(),
       }).then(() => {
         notifySuccess("Signup Successful");
         setFormData(initialFromState);
-        navigate(location.state?.from?.pathname || "/");
+        const locationState = location.state as LocationState;
+        navigate(locationState?.from?.pathname || "/");
       });
     }
   };
@@ -107,22 +123,22 @@ const AuthProvider = ({ children }) => {
         const res = await getDoc(doc(db, `/users/${user.uid}`));
         const data = res.data();
         setUserData({
-          firstName: data.firstName,
-          lastName: data.lastName,
-          email: data.email,
-          password: data.password,
-          totalScore: data.totalScore,
-          totalQuizPlayed: data.totalQuizPlayed,
-          uid: data.uid.trim(),
+          firstName: data?.firstName,
+          lastName: data?.lastName,
+          email: data?.email,
+          password: data?.password,
+          totalScore: data?.totalScore,
+          totalQuizPlayed: data?.totalQuizPlayed,
+          uid: data?.uid.trim(),
         });
-        setUserName(data.firstName);
+        setUserName(data?.firstName);
         setIsUserLoggedIn(true);
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const updateScore = async (score) => {
+  const updateScore = async (score: number) => {
     const newTotalScore = userData.totalScore + score;
     const newTotalQuizPlayed = userData.totalQuizPlayed + 1;
     setUserData((prev) => ({
